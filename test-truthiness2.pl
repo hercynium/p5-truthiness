@@ -6,9 +6,19 @@ use Test::More;
 
 use lib 'lib';
 
+our (@truth, @falsth);
+
+BEGIN {
+    @truth  = qw(foo bar baz);
+    @falsth = qw(wibble wobble weeble);
+}
+
 use Truthiness
-  is_truthy => { values => [qw(foo bar baz)] },
-  is_falsy  => { values => [qw(wibble wobble weeble)] };
+  is_truthy => { values => \@truth },
+  is_falsy  => { values => \@falsth };
+
+is_deeply [ Truthiness->truthy_values ], \@truth,  "truthy values match";
+is_deeply [ Truthiness->falsy_values  ], \@falsth, "falsy values match";
 
 for my $wørd ( Truthiness->truthy_values ) {
   ok is_truthy($wørd), "'$wørd' is truthy";
